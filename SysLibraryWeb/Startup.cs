@@ -14,6 +14,11 @@ using SysLibraryWeb.Data;
 
 namespace SysLibraryWeb
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using SysLibraryWeb.Infrastructure;
+    using SysLibraryWeb.Models;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -41,9 +46,34 @@ namespace SysLibraryWeb
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("StudentIdentityDbContext"));
                 });
+            //自定义账号密码设置
+            services.AddIdentity<Student,IdentityRole>(
+                opts =>
+                    {
+                        opts.User.RequireUniqueEmail = true;
+                        opts.User.AllowedUserNameCharacters =
+                            "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+                        opts.Password.RequiredLength = 6;
+                        opts.Password.RequireNonAlphanumeric = false;
+                        opts.Password.RequireLowercase = false;
+                        opts.Password.RequireUppercase = false;
+                        opts.Password.RequireDigit = false;
+                    }).AddEntityFrameworkStores<StudentIdentityDbContext>().AddDefaultTokenProviders();
+
+
+            services.ConfigureApplicationCookie(opts =>
+                {
+                    opts.Cookie.HttpOnly = true;
+                    opts.LoginPath = "/StudentAccount/Login";
+                    opts.AccessDeniedPath = "/StudentAccount/Login";
+                    opts.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                });            
+
+
             //----------------------
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,9 +90,11 @@ namespace SysLibraryWeb
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            //app.UseSession();
 
             app.UseMvc(routes =>
             {
@@ -70,6 +102,13 @@ namespace SysLibraryWeb
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            using (var serviceScope=app.ApplicationServices.CreateScope())
+            {
+                var services = serviceScope.ServiceProvider;
+                StudentInitiator.Initial(services).Wait();
+                BookInitiator.BookInitial(services).Wait();
+            }
+
         }
     }
 }
