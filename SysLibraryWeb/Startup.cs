@@ -89,8 +89,8 @@ namespace SysLibraryWeb
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseAuthentication();
+            //中间件顺序很重要
+            app.UseAuthentication(); //若没有这个，则访问[Authorize] 的方法会再度要求进行验证
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
