@@ -69,7 +69,7 @@ namespace SysLibraryWeb
                     opts.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 });
 
-            services.AddSingleton<EmailSender>();
+            services.AddSingleton<EmailSender>(); //整个网页的生命周期使用同一个SmtpCient实例
             //----------------------
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -1,12 +1,12 @@
 {
   "Mail": {
-    "MailFromAddress": "",
+    "MailFromAddress": "wxm0_0wxm@163.com",
     "UseSsl": "false",
-    "Username": "",
-    "Password": "",
-    "ServerPort": "25", 
+    "UserName": "wxm0_0wxm",
+    "Password": "ws951014",
+    "ServerPort": "25",
     "ServerName": "smtp.163.com",
-    "UseDefaultCredentials": "true" 
+    "UseDefaultCredentials": "true"
   }
 
 }
