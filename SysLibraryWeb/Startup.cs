@@ -67,9 +67,9 @@ namespace SysLibraryWeb
                     opts.LoginPath = "/StudentAccount/Login";
                     opts.AccessDeniedPath = "/StudentAccount/Login";
                     opts.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-                });            
+                });
 
-
+            services.AddSingleton<EmailSender>();
             //----------------------
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

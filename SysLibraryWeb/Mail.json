@@ -1,0 +1,12 @@
+{
+  "Mail": {
+    "MailFromAddress": "",
+    "UseSsl": "false",
+    "Username": "",
+    "Password": "",
+    "ServerPort": "25", 
+    "ServerName": "smtp.163.com",
+    "UseDefaultCredentials": "true" 
+  }
+
+}

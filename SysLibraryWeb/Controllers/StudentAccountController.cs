@@ -116,5 +116,31 @@ namespace SysLibraryWeb.Controllers
             }
             return Redirect(returnUrl);
         }
+
+        //修改密码视图
+        public IActionResult ModifyPassword()
+        {
+            ModifyViewModel model=new ModifyViewModel();
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ModifyPassword(ModifyViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string userName = HttpContext.User.Identity.Name;
+                var student = this.UserManager.Users.FirstOrDefault(s => s.UserName == userName);
+                var result =await this.UserManager.ChangePasswordAsync(student,model.OriginalPassword,model.ModifiedPassword);
+                if (result.Succeeded) //修改密码成功则登出，显示再次登录界面
+                {
+                    await this.SignInManager.SignOutAsync();
+                    return this.View("ModifySuccess");
+                }
+                ModelState.AddModelError("","原密码输入错误");
+            }
+            return this.View(model);
+        }
     }
 }
