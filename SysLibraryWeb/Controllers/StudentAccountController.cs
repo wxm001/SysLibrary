@@ -41,7 +41,7 @@ namespace SysLibraryWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken] //防止XSRF攻击,
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel loginInfo, string returnUrl)//returnUrl用于接收和返回之前正在访问的界面
+        public async Task<IActionResult> Login(LoginViewModel loginInfo, string returnUrl)//returnUrl用于接收和返回之前正在访问的界面,实现登录之后跳转到原来要访问的页面
         {
             if (ModelState.IsValid) //模型绑定之后需要检查一下
             {

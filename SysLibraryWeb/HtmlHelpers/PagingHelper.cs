@@ -17,7 +17,7 @@
             for (int i = 1; i <= pagingInfo.TotalPages; i++)
             {
                 TagBuilder tag=new TagBuilder("a");
-                tag.MergeAttribute("herf",pageUrl(i));
+                tag.MergeAttribute("href",pageUrl(i));
                 tag.InnerHtml.AppendHtml(i.ToString());
                 if (i==pagingInfo.CurrentPage)
                 {
